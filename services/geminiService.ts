@@ -3,11 +3,17 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { Company } from "../types";
 import { OFFLINE_QUESTS } from '../constants';
 
-if (!process.env.API_KEY) {
+// Only construct the AI client when an API key is present. Constructing with
+// an undefined key can throw at module evaluation time and break the app.
+const apiKey = process.env.API_KEY;
+if (!apiKey) {
   console.warn("API_KEY environment variable not set. Gemini API features will be disabled. Using offline quests.");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+let ai: GoogleGenAI | null = null;
+if (apiKey) {
+  ai = new GoogleGenAI({ apiKey });
+}
 
 interface QuestResponse {
     text: string;
@@ -20,7 +26,7 @@ const getRandomOfflineQuest = (): QuestResponse => {
 };
 
 export const generateQuest = async (): Promise<QuestResponse> => {
-    if (!process.env.API_KEY) {
+    if (!apiKey || !ai) {
         // Return a random offline quest if API key is not available
         return getRandomOfflineQuest();
     }
@@ -71,7 +77,7 @@ export const generateQuest = async (): Promise<QuestResponse> => {
 };
 
 export const getInvestmentNews = async (company: Company): Promise<string> => {
-    if (!process.env.API_KEY) {
+    if (!apiKey || !ai) {
         return `A reliable source reports that ${company.name} is on the verge of a major breakthrough! Early investors are buzzing with excitement.`;
     }
 
