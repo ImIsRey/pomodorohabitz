@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodoro Habit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;700&display=swap');
+      .font-pixel {
+        font-family: 'Pixelify Sans', sans-serif;
+      }
+      .pixelated {
+        image-rendering: pixelated;
+      }
+      .strikethrough-char {
+        position: relative;
+        display: inline-block;
+      }
+      .strikethrough-char::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 0.1em;
+        background: currentColor;
+        top: 55%;
+        left: 0;
+        transform-origin: left;
+        transform: scaleX(0);
+        transition: transform 0.2s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+      }
+      .todo-completed .strikethrough-char {
+        color: #a8a29e; /* stone-400 */
+        transition: color 0.4s;
+      }
+      .dark .todo-completed .strikethrough-char {
+        color: #78716c; /* stone-500 */
+      }
+      .todo-completed .strikethrough-char::after {
+        transform: scaleX(1);
+        transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+      }
+    </style>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "docx": "https://esm.sh/docx@^8.5.0",
+    "file-saver": "https://esm.sh/file-saver@^2.0.5"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
